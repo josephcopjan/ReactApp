@@ -10,10 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class StudentController {
@@ -44,6 +41,14 @@ public class StudentController {
         System.out.println(savedObject.getId());
 
         studentService.addStudent(student);
+        return new ResponseEntity<>(student, HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/student/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Object> getStudentById(@PathVariable("id") int id) {
+        Student student = studentService.getStudent(Long.valueOf(id));
+        System.out.println("aaa");
         return new ResponseEntity<>(student, HttpStatus.OK);
     }
 }

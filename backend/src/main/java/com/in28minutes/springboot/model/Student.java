@@ -20,7 +20,7 @@ public class Student {
     private String gender;
 
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     private Address address;
 
     protected Student() {}

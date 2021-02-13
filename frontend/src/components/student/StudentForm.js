@@ -268,42 +268,7 @@ const classes = makeStyles((theme) => ({
               <MyTabPanel value={tabIndex} index={2}>
               <MyAutocomplete/>
 
-              <MyTransferList leftSide={[11,22,33,44]} rightSide={[55,66,77,88]}/>
-                        <ReactTable
-                          data={data}
-                          columns={[
-                            {
-                              Header: "Name",
-                              columns: [
-                                {
-                                  Header: "First Name",
-                                  accessor: "firstName"
-                                },
-                                {
-                                  Header: "Last Name",
-                                  accessor: "lastName"
-                                }
-                              ]
-                            },
-                            {
-                              Header: "Info",
-                              columns: [
-                                {
-                                  Header: "Age",
-                                  accessor: "age"
-                                }
-                              ]
-                            }
-                          ]}
-                          defaultSorted={[
-                            {
-                              id: "age",
-                              desc: true
-                            }
-                          ]}
-                          defaultPageSize={10}
-                          className="-striped -highlight"
-                        />
+
               </MyTabPanel>
               <br/>
         </div>

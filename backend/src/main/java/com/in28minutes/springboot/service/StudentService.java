@@ -10,5 +10,5 @@ public interface StudentService {
     public abstract void updateStudent(int id, Student student);
     public abstract void deleteStudent(int id);
     public abstract Collection<Student> getStudents();
-    public abstract Student getCustomer(String id);
+    public abstract Student getStudent(long id);
 }

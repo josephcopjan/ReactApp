@@ -41,7 +41,7 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public Student getCustomer(String id) {
-        return null;
+    public Student getStudent(long id) {
+        return repository.findById(id);
     }
 }
