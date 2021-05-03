@@ -7,7 +7,7 @@ import java.util.Collection;
 
 public interface StudentService {
     public abstract void addStudent(Student student);
-    public abstract void updateStudent(int id, Student student);
+    public abstract void updateStudent(Student student);
     public abstract void deleteStudent(int id);
     public abstract Collection<Student> getStudents();
     public abstract Student getStudent(long id);

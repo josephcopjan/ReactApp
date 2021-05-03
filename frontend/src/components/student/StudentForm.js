@@ -24,7 +24,10 @@ import MyRadioGroup from '../elements/MyRadioGroup';
 import MyButtonComponent from '../elements/MyButtonComponent';
 import MyTabPanel from '../elements/MyTabPanel';
 import MyTransferList from '../elements/MyTransferList';
+import MyTransferList2 from '../elements/MyTransferList2';
 import MyDialog from '../elements/MyDialog';
+import MyInputLabel from '../elements/MyInputLabel';
+import MyCircularProcess from '../elements/MyCircularProcess';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import InputBase from '@material-ui/core/InputBase';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -59,11 +62,16 @@ class StudentForm extends Component {
         isSubmitOpened: 'true',
         stat: 'aaar',
         title: '',
-        message: '',
+        message: 'testik',
         age: '',
         tabIndex: 0,
         data: makeData(),
-        open: false
+        firstNameState: '',
+        lastNameState: '',
+        open: false,
+        allSubjectsState: [],
+        mySubjects: [],
+        parentName: ''
     };
 
     constructor(props) {
@@ -74,6 +82,19 @@ class StudentForm extends Component {
     componentDidMount() {
         const { fetch, match: { params: { id } } } = this.props;
         fetch(id);
+        const { subjects, mySubjects } = this.state;
+        this.setState({subjects: [
+          {"value":"John", "id": 1},
+          {"value":"Anna", "id": 3},
+          {"value":"Peter", "id": 5}
+        ]});
+
+
+        this.setState({mySubjects: [
+          {"value":"John2", "id": 2},
+          {"value":"Anna2", "id": 4},
+          {"value":"Peter2", "id": 6}
+        ]});
     }
 
     getCountry = id => {
@@ -94,8 +115,8 @@ class StudentForm extends Component {
     };
 
     submitForm = (values, action, notificatinFlag) => {
-        const { student } = this.state;
-        const { onSubmit, history, setStatus, saveStudentSuccess, countries, dispatch } = this.props;
+        const { student, parentName } = this.state;
+        const { onSubmit, history, setStatus, saveStudentSuccess, countries, dispatch, myField } = this.props;
 
         this.setState({ open: false });
         setStatus(false);
@@ -105,7 +126,7 @@ class StudentForm extends Component {
         values.country =  this.getCountry(values.country);
         console.log(values.firstName);
         //onSubmit(false);
-        return new Promise(() => { onSubmit({ ...values, student }, history); });
+        return new Promise(() => { onSubmit({ ...values, student, parentName, myField }, history); });
     };
 
     handleApproveProgress = ({ action, confirm = false }) => () => {
@@ -113,19 +134,43 @@ class StudentForm extends Component {
         this.submitForm(student, action, confirm);
     };
 
+        changeParentName = (newName) => {
+            this.setState({ parentName: newName });
+        }
 
-
-           // const methods = null; //useForm();
+        changeSubjects = (subjects, mySubjects) => {
+            this.setState({ subjects: subjects });
+            this.setState({ mySubjects: mySubjects });
+        }
 
       render() {
-      const { data } = this.state;
-        let allCountries = [{name: 'Bhutan', code: 'BT'}, {name: 'Slovakia', code: 'SK'}];
-        const gender = [{name: 'Male', code: 'male'}, {name: 'Female', code: 'female'}];
+        const { data } = this.state;
+        const gender = [{name: 'Male', code: 'Male'}, {name: 'Female', code: 'Female'}];
         const { error, handleSubmit, pristine, reset, submitting, valid } = this.props;
-        const { status, setStatus, countries } = this.props;
-        allCountries = countries.map(country => ({id:country.id, name: country.country, code: country.id}))
+        const { status, myField, setStatus, countries, allSubjects, initialValues: { firstName, lastName, subjects } } = this.props;
+        const allCountries = countries.map(country => ({id:country.id, value: country.country, text: country.country, name: country.country, code: country.id}))
         //const availableOwnerCodes = ownerCodes.map(code => ({ id: code.fldValue, text: code.descrip }));
-        const { isSubmitOpened, stat, open } = this.state;
+        const { isSubmitOpened, stat, open, message, firstNameState, lastNameState, mySubjects, allSubjectsState } = this.state;
+
+        const array2Sorted = allSubjectsState.slice().sort();
+        const compare = allSubjects.length === allSubjectsState.length && allSubjects.slice().sort().every(function(value, index) {
+            return value === array2Sorted[index];
+        });
+
+        if(!compare && allSubjectsState.length===0) {
+            subjects.sort((a, b) => a.id - b.id);
+            var res = allSubjects.filter(item1 => !subjects.some(item2 => (item2.id === item1.id)))
+           // const restSubjects = allSubjects.filter(x => !subjects.filter(y=> y.id!==x.id));
+            this.setState({allSubjectsState: res });
+            this.setState({mySubjects: subjects});
+        }
+
+        if(firstNameState !== firstName || lastNameState!==lastName){
+            this.setState({ firstNameState: firstName });
+            this.setState({ lastNameState: lastName });
+            this.setState({ message: 'Student : ' + firstName + ' ' + lastName});
+        }
+
         const age = 'aa';
         const handleChange = (event) => {
             const { dispatch } = this.props;
@@ -134,16 +179,30 @@ class StudentForm extends Component {
             dispatch(change('student', 'status', event.target.value));
             //setAge(event.target.value);
         };
+
+        const setLocation = countryName => {
+            const { dispatch, countries } = this.props;
+            let country = null;
+
+            countries.forEach(location => {
+                if (location.country === countryName) {
+                    country = location;
+                }
+            });
+
+            if (country !== null) {
+                dispatch(change('studentForm', 'country', country.id));
+            }
+            return country;
+        };
         const value = 0;
         const { tabIndex } = this.state;
         //const [value, setValue] = React.useState(2);
 
         const handleChangeTab = (event, newValue) => {
-           // setValue(newValue);
+
             this.setState({ tabIndex: newValue });
         };
-
-
 
 const classes = makeStyles((theme) => ({
   root: {
@@ -173,7 +232,8 @@ const classes = makeStyles((theme) => ({
 
         return (
 <div>
-<h3>Tu bude Title</h3>
+<MyCircularProcess submitting={!submitting}/>
+<MyInputLabel  value={message}/>
     <br/>
     <Paper square>
       <Tabs
@@ -234,32 +294,32 @@ const classes = makeStyles((theme) => ({
                   Country
                 </Grid>
                 <Grid item xs={8}>
-                  <Field name="country" component={MySelectTest} options={allCountries} label="Country"/>
+                  <Field name="location" selectedOptionId='7' component={MySelectTest} onChange={setLocation} value="location" options={allCountries} label="Country"/>
                 </Grid>
 
                   <Grid item xs={4}>
                     City
                   </Grid>
                   <Grid item xs={8}>
-                    <Field name="city" component={MyTextField} label="City"/>
+                    <Field name="address.city" component={MyTextField} label="City"/>
                   </Grid>
                   <Grid item xs={4}>
                     Street
                   </Grid>
                   <Grid item xs={8}>
-                    <Field name="street" component={MyTextField} label="Street"/>
+                    <Field name="address.street" component={MyTextField} label="Street"/>
                   </Grid>
                    <Grid item xs={4}>
                      Number
                    </Grid>
                    <Grid item xs={8}>
-                     <Field name="number" component={MyTextField} label="Number"/>
+                     <Field name="address.number" component={MyTextField} label="Number"/>
                    </Grid>
                    <Grid item xs={4}>
                      ZIP
                    </Grid>
                    <Grid item xs={8}>
-                     <Field name="zip" component={MyTextField} label="ZIP"/>
+                     <Field name="address.zip" component={MyTextField} label="ZIP"/>
                    </Grid>
 
 
@@ -267,21 +327,37 @@ const classes = makeStyles((theme) => ({
               </MyTabPanel>
               <MyTabPanel value={tabIndex} index={2}>
               <MyAutocomplete/>
+              <Grid container spacing={3} item xs={10}>
+                  <Grid item xs={4}></Grid>
+                  <Grid item xs={8}>
+                      <Button disabled={!valid || pristine || submitting} style={{ float: 'right' }} variant="contained" color="primary" onClick={handleClickOpenDialog}>
+                          Confirm
+                      </Button>
+
+                  </Grid>
+                    <Grid item xs={4}>
+                                         TEST
+                                       </Grid>
+                                       <Grid item xs={8}>
+                                         <Field name="bigTest" component={MyTextField} label="BigTest"/>
+                                       </Grid>
+
+                  <Grid item xs={4}></Grid>
+                  <Grid item xs={8}>
+                      <Field name="testik" childName={this.state.parentName} changeSubjects={this.changeSubjects} onNameChange={this.changeParentName} myField={myField} subjects={allSubjectsState} mySubjects={mySubjects} options={allCountries} component={MyTransferList} label="Testik"/>
+
+                      <Field component={MyTextField} name={this.state.parentName} value={this.state.parentName} />
+                      <MyTransferList2/>
+                  </Grid>
+
+              </Grid>
 
 
               </MyTabPanel>
               <br/>
         </div>
 
-        <Grid container spacing={3} item xs={10}>
-            <Grid item xs={4}></Grid>
-            <Grid item xs={8}>
-                <Button disabled={!valid || pristine || submitting} style={{ float: 'right' }} variant="contained" color="primary" onClick={handleClickOpenDialog}>
-                    Confirm
-                </Button>
-                <MyButtonComponent label="Cancel" color="secondary" method={handleClickOpenDialog}/>
-            </Grid>
-        </Grid>
+
         <br/>
         <MyDialog
             open={open}

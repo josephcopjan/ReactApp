@@ -10,14 +10,16 @@ import safeMapStateToProps from '../../utils/map-state-to-props';
 const mapStateToProps = safeMapStateToProps(state => {
     const { studentForm, precache, users } = state;
     console.log('state ' + state);
-	const { status, student, countries } = studentForm;
+	const { status, student, countries, allSubjects } = studentForm;
     //const { status } = studentForm;
 
 	return {
 	    initialValues: student,
 	    submitting: isSubmitting('studentForm')(state),
 		status,
-		countries
+		countries,
+		allSubjects,
+		myField : ["aaa", "bbb"]
 	};
 });
 
@@ -37,7 +39,7 @@ const mapDispatchToProps = dispatch => {
 };
 
 const Student = compose(
-	withRouter,
+
 	connect(mapStateToProps, mapDispatchToProps),
 	reduxForm({
 		form: 'studentForm',

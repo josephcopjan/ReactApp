@@ -11,6 +11,7 @@ import studentReducer from './components/student/duck/reducer';
 import teacherReducer from './components/student/duck/reducer';
 import { reducer as formReducer } from 'redux-form';
 import thunk from 'redux-thunk';
+import authReducer from "./reducers";
 
 //top level of React component hierarchy
 class ReactApp extends React.Component {
@@ -27,7 +28,7 @@ export default ReactApp;
 
 // combining two reducers into a single reducer
 const reducer = combineReducers({
-
+    authReducer,
     form: formReducer,
     studentForm: studentReducer,
     teacherForm: teacherReducer,

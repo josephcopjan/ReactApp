@@ -33,6 +33,8 @@ import org.springframework.beans.factory.annotation.Value;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -50,6 +52,7 @@ public class StudentServicesApplication {
 
     @Autowired
     CountryService countryService;
+
 
 	@Value("${spring.application.name:majaDefaultValue}")
 	private String name;
@@ -72,26 +75,38 @@ public class StudentServicesApplication {
 		logger.info("this is a info message");
 	    logger.warn("this is a warn message");
 	    logger.error("this is a error message");
+        System.out.println("----------> " + System.getProperty("java.class.path"));
 		SpringApplication.run(StudentServicesApplication.class, args);
 
 	}
 
     @Bean
-    public CommandLineRunner demo(StudentRepository repository, CountryRepository countryRepository, AddressRepository addressRepository, RoleRepository roleRepository, UserRepository userRepository) {
+    public CommandLineRunner demo(StudentRepository repository, CountryRepository countryRepository, AddressRepository addressRepository, RoleRepository roleRepository, UserRepository userRepository, SubjectRepository subjectRepository) {
         return (args) -> {
             // save a few customers
 
 /*
             countryService.saveCountry("SK", "Slovakia");
 */
+
+
+            subjectRepository.save(new Subject("Armenian",1));
+            subjectRepository.save(new Subject("Slovakian",1));
+            subjectRepository.save(new Subject("Slovakian",2));
+            subjectRepository.save(new Subject("English",1));
+            subjectRepository.save(new Subject("English",2));
+            subjectRepository.save(new Subject("German",1));
+            subjectRepository.save(new Subject("German",2));
+            subjectRepository.save(new Subject("German",3));
            // userRepository.save(new User);
-            roleRepository.save(new Role("ROLE_ADMIN", "Admin role", new Date()));
-            roleRepository.save(new Role("ROLE_USER", "User role", new Date()));
+            roleRepository.save(new Role(ERole.ROLE_ADMIN, "Admin role", new Date()));
+            roleRepository.save(new Role(ERole.ROLE_USER, "User role", new Date()));
 
             //Collection<Role> rolesIterable = roleRepository.findAll();
             List<Role> roles = StreamSupport.stream(roleRepository.findAll().spliterator(), false).collect(Collectors.toList());
 
-            userRepository.save(new User(false, "Jozef", "Copjan", "jozef.copjan@sk.ibm.com", new Date(), roles));
+            userRepository.save(new User("mod", "mod@bezkoder.com", "$2a$10$VcdzH8Q.o4KEo6df.XesdOmXdXQwT5ugNQvu1Pl0390rmfOeA1bhS", roles));
+            //userRepository.save(new User(false, "Jozef", "Copjan", "jozef.copjan@sk.ibm.com", new Date(), roles));
 
             countryRepository.save(new Country("SK", "Slovakia"));
             countryRepository.save(new Country("CZ", "Czech republic"));
@@ -108,11 +123,17 @@ public class StudentServicesApplication {
 
             List<Address> addresses = StreamSupport.stream(addressRepository.findAll().spliterator(), false).collect(Collectors.toList());
 
-            repository.save(new Student("Jack", "Bauer", addresses.get(0), 1l, new GregorianCalendar(1987, Calendar.NOVEMBER, 11).getTime(), true, "M"));
-            repository.save(new Student("Chloe", "O'Brian", addresses.get(1),2l, new GregorianCalendar(1986, Calendar.DECEMBER, 11).getTime(), false, "M"));
-            repository.save(new Student("Kim", "Bauer", addresses.get(2),4l, new GregorianCalendar(1983, Calendar.APRIL, 11).getTime(), false, "F"));
-            repository.save(new Student("David", "Palmer", addresses.get(3),2l, new GregorianCalendar(1982, Calendar.NOVEMBER, 11).getTime(), true, "M"));
-            repository.save(new Student("Michelle", "Dessler", addresses.get(4),7l, new GregorianCalendar(1987, Calendar.JANUARY, 11).getTime(), true, "F"));
+            ZoneId defaultZoneId = ZoneId.systemDefault();
+            Set<Subject> subjects = new HashSet<>();
+            subjects.add(subjectRepository.findById(1l).get());
+            subjects.add(subjectRepository.findById(2l).get());
+            subjects.add(subjectRepository.findById(4l).get());
+
+            repository.save(new Student("Jack", "Bauer", addresses.get(0), 1l, new GregorianCalendar(1987, Calendar.NOVEMBER, 11).getTime(), Date.from(LocalDate.now().minusDays(0).atStartOfDay(defaultZoneId).toInstant()),true, "M", subjects));
+            repository.save(new Student("Chloe", "O'Brian", addresses.get(1),2l, new GregorianCalendar(1986, Calendar.DECEMBER, 11).getTime(), Date.from(LocalDate.now().minusDays(1).atStartOfDay(defaultZoneId).toInstant()),false, "M", null));
+            repository.save(new Student("Kim", "Bauer", addresses.get(2),4l, new GregorianCalendar(1983, Calendar.APRIL, 11).getTime(), Date.from(LocalDate.now().minusDays(2).atStartOfDay(defaultZoneId).toInstant()), false, "F", subjects));
+            repository.save(new Student("david", "Palmer", addresses.get(3),2l, new GregorianCalendar(1982, Calendar.NOVEMBER, 11).getTime(), Date.from(LocalDate.now().minusDays(3).atStartOfDay(defaultZoneId).toInstant()), true, "M", subjects));
+            repository.save(new Student("Michelle", "Dessler", addresses.get(4),7l, new GregorianCalendar(1987, Calendar.JANUARY, 11).getTime(), Date.from(LocalDate.now().minusDays(4).atStartOfDay(defaultZoneId).toInstant()), true, "F", null));
 
             // fetch all customers
             logger.info("Customers found with findAll():");
@@ -138,6 +159,9 @@ public class StudentServicesApplication {
             // for (Customer bauer : repository.findByLastName("Bauer")) {
             //  log.info(bauer.toString());
             // }
+
+
+           // Subject subject = new Subject();
 
 
 

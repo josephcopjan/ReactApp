@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import axios from "axios";
 import ReactTable, { ReactTableDefaults } from 'react-table-6';
+import authHeader from '../../services/auth-header';
 
 class MyReactTable extends Component {
     constructor(props) {
@@ -16,11 +17,18 @@ class MyReactTable extends Component {
 
     renderOptions = (query) => {
         try {
-            axios.all([axios.get('http://localhost:9090'+query)]).then(axios.spread((...responses) => {
+        /*
+            axios.all([axios.get('http://localhost:9090'+query), { headers: authHeader() }]).then(axios.spread((...responses) => {
               this.setState({data: responses[0].data});
             })).catch(errors => {
 
-            })
+            })*/
+
+            axios.get('http://localhost:9090'+query, { headers: authHeader() }).then(
+                                      response => {
+                                        this.setState({data: response.data});
+                                      }
+                                      );
         } catch (error) { }
     }
 
@@ -50,7 +58,6 @@ class MyReactTable extends Component {
               <ReactTable
                 data={data}
                 filterable={true}
-                defaultFilterMethod={this.filterCaseInsensitive}
                 columns={columns}
                 defaultSorted={defaultSorted}
                 defaultPageSize={10}

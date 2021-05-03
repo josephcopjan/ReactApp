@@ -6,51 +6,39 @@ import {
   MuiThemeProvider
 } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles, createStyles } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/core/styles';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 
-
-const styles = {
+const useStyles = makeStyles({
   root: {
-    fontSize: 10
-  }
-};
-
-    const renderOptions = (options) => {
-     return options.map((dt, i) => {
-
-       return (
-           <MenuItem
-             label="Select a country"
-             value={dt.code}
-            key={i} name={dt.name}>{dt.name}</MenuItem>
-
-       );
-     });
-    };
-
-const useStyles = makeStyles(theme => ({
-  focused: {
-    fontSize: 10
-  }
-}));
+    height: 30,
+    padding: '10px 30px 0px 30px;',
+    fontSize: 10,
+  },
+});
 
 function MySelectTest(props) {
+
+    const { label, color, method, options, input: { onChange, name, value, selectedOptionId } } = props;
     const classes = useStyles();
-    const { label, color, method, options } = props;
+
     const renderOptions = (options) => {
      return options.map((dt, i) => {
-
+        //const aaa =classes;
        return (
-           <MenuItem
-             label="Select a country"
-             value={dt.code}
-            key={i} name={dt.name}>{dt.name}</MenuItem>
-
+           <option
+             label={dt.name}
+             value={dt.name}
+             key={dt.id}
+             name={dt.name}
+             className={classes.root}
+           >
+             {dt.name}
+           </option >
        );
      });
     };
@@ -63,12 +51,15 @@ function MySelectTest(props) {
           Country
         </InputLabel>
         <Select
-          labelId="demo-simple-select-outlined-label"
-          id="demo-simple-select-outlined"
+            name={name}
+            value={value}
+            onChange={e => { onChange(e.target.value); }}
+            labelId="demo-simple-select-outlined-label"
+            id="demo-simple-select-outlined"
         >
           {renderOptions(options)}
         </Select>
       </FormControl>
   );
 }
-export default withStyles(styles)(MySelectTest);
+export default MySelectTest;

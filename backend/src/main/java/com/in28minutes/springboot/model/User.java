@@ -3,10 +3,18 @@ package com.in28minutes.springboot.model;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.*;
 
 @EntityListeners(AuditingEntityListener.class)
 @Entity
+@Table(	name = "user",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "username"),
+                @UniqueConstraint(columnNames = "email")
+        })
 public class User {
 
     @Id
@@ -18,8 +26,36 @@ public class User {
     private String userName;
     private Date createdDate;
 
-    @OneToMany(fetch = FetchType.LAZY, targetEntity = Role.class)
-    private List<Role> role;
+    @NotBlank
+    @Size(max = 50)
+    @Email
+    private String email;
+
+    @NotBlank
+    @Size(max = 120)
+    private String password;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(	name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
+
+    public User() {
+    }
+
+    public User(String userName, String email, String password) {
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+    }
+
+    public User(String userName, String email, String password, List<Role> role) {
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
 
     public User(boolean disabled, String firstName, String lastName, String userName, Date createdDate, List<Role> role) {
         this.disabled = disabled;
@@ -27,7 +63,7 @@ public class User {
         this.lastName = lastName;
         this.userName = userName;
         this.createdDate = createdDate;
-        this.role = role;
+        this.roles = roles;
     }
 
     public User(Long id, boolean disabled, String firstName, String lastName, String userName, Date createdDate, List<Role> role) {
@@ -37,10 +73,7 @@ public class User {
         this.lastName = lastName;
         this.userName = userName;
         this.createdDate = createdDate;
-        this.role = role;
-    }
-
-    public User() {
+        this.roles = roles;
     }
 
     public Long getId() {
@@ -91,11 +124,27 @@ public class User {
         this.createdDate = createdDate;
     }
 
-    public List<Role> getRole() {
-        return role;
+    public String getEmail() {
+        return email;
     }
 
-    public void setRole(List<Role> role) {
-        this.role = role;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }

@@ -4,6 +4,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @EntityListeners(AuditingEntityListener.class)
 @Entity
@@ -16,23 +17,34 @@ public class Student {
     private String lastName;
     private Long cntrId;
     private Date birthDate;
+    private Date registrationDate;
     private boolean internal;
     private String gender;
+
+    @ManyToMany
+    @JoinTable(
+            name = "student_subject",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "subject_id"))
+    Set<Subject> subjects;
 
 
     @OneToOne(fetch = FetchType.EAGER)
     private Address address;
 
+
     protected Student() {}
 
-    public Student(String firstName, String lastName, Address address, Long cntrId, Date birthDate, boolean internal, String gender) {
+    public Student(String firstName, String lastName, Address address, Long cntrId, Date birthDate, Date registrationDate, boolean internal, String gender, Set<Subject> subjects) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
         this.cntrId = cntrId;
         this.birthDate = birthDate;
+        this.registrationDate = registrationDate;
         this.internal = internal;
         this.gender = gender;
+        this.subjects = subjects;
     }
 
     @Override
@@ -92,5 +104,21 @@ public class Student {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public Set<Subject> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(Set<Subject> subjects) {
+        this.subjects = subjects;
+    }
+
+    public Date getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(Date registrationDate) {
+        this.registrationDate = registrationDate;
     }
 }

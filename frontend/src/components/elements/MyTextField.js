@@ -40,10 +40,10 @@ const styles = {
 
 const MyTextField = ({ input, label, meta: { touched, error, warning  }, ...custom }) => (
 <div>
-  <TextField hintText={label}
-    className={styles.root}
-    floatingLabelText={label}
-    errorText={touched && error}
+  <TextField
+    classes={styles.root}
+    label={label}
+    error={(touched && error!==null)}
     variant="outlined"
     margin= 'dense'
     label={label}
@@ -51,7 +51,7 @@ const MyTextField = ({ input, label, meta: { touched, error, warning  }, ...cust
     {...input}
     {...custom}
   />
-    {touched && ((error && <span className="text-danger">{error}</span>) || (warning && <span>{warning}</span>))}
+    {touched && (((error!==null) && <span className="text-danger">{error}</span>) || (warning && <span>{warning}</span>))}
 </div>
 )
 

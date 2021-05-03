@@ -3,7 +3,7 @@ import { createActions } from 'reduxsauce';
 const { Creators, Types } = createActions({
     setStatus: ['status'],
     saveStudentSuccess: ['student'],
-    fetchStudentSuccess: ['student', 'countries'],
+    fetchStudentSuccess: ['student', 'countries', 'allSubjects'],
     /*
 	fetchNewBusinessGroupSuccess: ['businessGroup', 'users'],
 	fetchBusinessGroupSuccess: ['businessGroup', 'users'],

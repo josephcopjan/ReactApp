@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface IAddressService {
     public abstract List<Address> getAddresses();
+    public void updateAddress(Address address);
 }

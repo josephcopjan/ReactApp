@@ -7,23 +7,28 @@ import java.util.Date;
 
 @EntityListeners(AuditingEntityListener.class)
 @Entity
+@Table(name = "roles")
 public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private ERole name;
+
     private String description;
     private Date createdDate;
 
-    public Role(Long id, String name, String description, Date createdDate) {
+    public Role(Long id, ERole name, String description, Date createdDate) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.createdDate = createdDate;
     }
 
-    public Role(String name, String description, Date createdDate) {
+    public Role(ERole name, String description, Date createdDate) {
         this.name = name;
         this.description = description;
         this.createdDate = createdDate;
@@ -40,14 +45,6 @@ public class Role {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -62,5 +59,13 @@ public class Role {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public ERole getName() {
+        return name;
+    }
+
+    public void setName(ERole name) {
+        this.name = name;
     }
 }

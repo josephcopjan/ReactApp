@@ -4,6 +4,7 @@ const INITIAL_STATE = {
 	status: 'new',
 	editable: false,
 	countries: [],
+	allSubjects: [],
 	student: {
 		allDomains: true,
 		allDeviceCategories: true,
@@ -25,8 +26,8 @@ const studentReducer = (state = INITIAL_STATE, action) => {
     }
 
     case Types.FETCH_STUDENT_SUCCESS: {
-        const { student, countries } = action;
-        return { ...state, student, editable: true, countries };
+        const { student, countries, allSubjects } = action;
+        return { ...state, student, editable: true, countries, allSubjects };
     }
 
 	default:
