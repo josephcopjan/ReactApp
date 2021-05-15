@@ -6,6 +6,7 @@ public class Test {
 
     public static void main(String[] args) {
         String aaa = null;
+        String bbb= null;
 
         try{
            // aaa.equals("");
