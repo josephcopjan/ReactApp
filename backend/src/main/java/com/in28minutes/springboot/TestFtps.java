@@ -24,6 +24,7 @@ file name       : CSDMDEV.PRIM.NIP(+1)
     private int returnCode;
 
     public static void main(String[] args) {
+        String test = null;
      //   System.setProperty("jdk.tls.client.enableSessionTicketExtension", String.valueOf(false));
         System.setProperty("jdk.tls.useExtendedMasterSecret", "false");
         FtpsTest ftpsTest = new FtpsTest();
