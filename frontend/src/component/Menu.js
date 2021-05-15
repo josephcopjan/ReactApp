@@ -83,6 +83,7 @@ class Menu extends React.Component {
               </ul>
               <ul className="nav navbar-nav navbar-right">
                 {!isLoggedIn && (<li><Link to="/login"><span className="glyphicon glyphicon-log-in"></span> Login</Link></li>)}
+                {!isLoggedIn && (<li><Link to="/registration"><span className="glyphicon glyphicon-log-in"></span> Registration</Link></li>)}
                 {isLoggedIn && (<li><Link onClick={this.logOut} ><span className="glyphicon glyphicon-log-in"></span> Logout</Link></li>)}
               </ul>
             </div>

@@ -16,17 +16,19 @@ import { TextField } from '@material-ui/core'
 import { makeStyles, withStyles, createStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 import authHeader from '../../services/auth-header';
+import { useTable, userFilters } from "react-table";
 
 class StudentList extends Component {
 
     state = {
-        students: []
+        students: [],
     };
 
       constructor(props) {
         super();
         this.state = {
-          data: makeData()
+          data: makeData(),
+          registrationDate: null
         };
       }
 
@@ -95,9 +97,14 @@ class StudentList extends Component {
         return Math.abs(ageDate.getUTCFullYear() - 1970);
     }
 
-    changeDate = (birthday) => {
+    changeDate = (birthday, filter) => {
+        const { registrationDate } = this.state;
+
        birthday = new Date(Date.parse(birthday));
-       return birthday.getFullYear()  + "-" + String((birthday.getMonth()+1)).padStart(2, '0') +"-"+String((birthday.getDate()-1)).padStart(2, '0');
+       //var bbb =
+       var bbb = birthday.getFullYear()  + "-" + String((birthday.getMonth()+1)).padStart(2, '0') +"-"+String((birthday.getDate()-1)).padStart(2, '0');
+       //this.setState({ registrationDate: bbb });
+       return bbb;
     }
 
     prepareDate = (birthday) => {
@@ -110,9 +117,21 @@ class StudentList extends Component {
         return newStudent;
     }
 
+    deleteDate = (aaa) => {
+       // const { ...setAllFilters } = useTable({ }, userFilters)
+        const { registrationDate } = this.state;
+        console.log("testik");
+        window.location.reload(false);
+        this.setState({ registrationDate: "2021-05-03" }); // "2021-05-07" '02/05/2021'
+        return "2021-05-03";
+        //return String((birthday.getDate())).padStart(2, '0') + "/" + String((birthday.getMonth()+1)).padStart(2, '0') + "/" + birthday.getFullYear();
+    }
+
   render() {
-      const { data, students } = this.state;
+      const { data, students, registrationDate } = this.state;
       const query = "/students";
+      const dateValue = null;
+
       //MuiInputBase-input MuiInput-input
       const theme = createMuiTheme({
         overrides: {
@@ -183,19 +202,20 @@ class StudentList extends Component {
                     <div>
                   <TextField
                         onChange={e =>
-                            onChange(this.changeDate(e.target.value))
+                            onChange(this.changeDate(e.target.value, filter))
                         }
-                        id="date"
+                        id="dateTest"
                         disableunderline={true}
                         type="date"
                         style = {{width: 120}}
-                        defaultValue={aaa}
+
+                        value= {registrationDate}
                         InputProps={{
                                 disableunderline: true
                         }}
 
                       />
-                    <DeleteIcon/>
+                    <DeleteIcon onClick={e => this.deleteDate(e.target.value)} style={{'width': '30px', 'height': '25px', 'padding-top': '5px'}}/>
                     </div>
                 </ThemeProvider>
 
@@ -259,7 +279,7 @@ class StudentList extends Component {
 
     return (
 
-        <div>
+        <div id="testik">
 
             <span class="material-icons">
             search
