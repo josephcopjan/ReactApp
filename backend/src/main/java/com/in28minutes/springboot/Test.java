@@ -11,6 +11,7 @@ public class Test {
         try{
            // aaa.equals("");
             String ccc = null;
+            String master = null;
             throw new RuntimeException("text");
         } catch (Exception e) {
             int maxLength = e.getMessage().length();
