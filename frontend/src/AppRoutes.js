@@ -10,6 +10,7 @@ import StudentList from './components/student/StudentList';
 import * as AppPaths from './AppPaths.js';
 import compose from 'compose-function';
 import { withRouter } from 'react-router';
+import TestPage from './components/student/TestPage';
 
 const AppRoutes = () => {
     return (
@@ -22,6 +23,7 @@ const AppRoutes = () => {
         <Route path={AppPaths.PATH_STUDENT_NEW} component={Student} />
         <Route path={AppPaths.PATH_STUDENT_ID} component={Student} />
         <Route path={AppPaths.PATH_STUDENT_LIST} render={() => (<StudentList cookies={null} />)} />
+        <Route path={AppPaths.PATH_TEST_PAGE} component={TestPage} />
         </Switch>
     );
 };

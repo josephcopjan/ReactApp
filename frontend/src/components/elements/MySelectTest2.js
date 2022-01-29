@@ -1,29 +1,26 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
+import React from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
+import FormControl from '@material-ui/core/FormControl'
+import Select from '@material-ui/core/Select'
 
 const useStyles = makeStyles(theme => ({
+}))
 
+export default function MySelectTest2 () {
+  const classes = useStyles()
+  const [age, setAge] = React.useState('')
 
-}));
-
-export default function MySelectTest2() {
-  const classes = useStyles();
-  const [age, setAge] = React.useState("");
-
-  const inputLabel = React.useRef(null);
-  const [labelWidth, setLabelWidth] = React.useState(0);
+  const inputLabel = React.useRef(null)
+  const [labelWidth, setLabelWidth] = React.useState(0)
   React.useEffect(() => {
-    setLabelWidth(inputLabel.current.offsetWidth);
-  }, []);
+    setLabelWidth(inputLabel.current.offsetWidth)
+  }, [])
 
   const handleChange = event => {
-    setAge(event.target.value);
-  };
+    setAge(event.target.value)
+  }
 
   return (
     <div>
@@ -51,5 +48,5 @@ export default function MySelectTest2() {
         </Select>
       </FormControl>
     </div>
-  );
+  )
 }

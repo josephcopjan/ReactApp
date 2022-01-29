@@ -1,5 +1,6 @@
-import React from 'react';
-import Select from 'react-select';
+import React from 'react'
+import Select from 'react-select'
+import PropTypes from 'prop-types'
 
 const aquaticCreatures = [
   { label: 'Shark', value: 'Shark' },
@@ -7,8 +8,8 @@ const aquaticCreatures = [
   { label: 'Whale', value: 'Whale' },
   { label: 'Octopus', value: 'Octopus' },
   { label: 'Crab', value: 'Crab' },
-  { label: 'Lobster', value: 'Lobster' },
-];
+  { label: 'Lobster', value: 'Lobster' }
+]
 
 const MySelectWithInput = ({ input, label, ...custom }) => (
 <div>
@@ -18,4 +19,9 @@ const MySelectWithInput = ({ input, label, ...custom }) => (
 </div>
 )
 
-export default MySelectWithInput;
+MySelectWithInput.propTypes = {
+  input: PropTypes.string,
+  label: PropTypes.string
+}
+
+export default MySelectWithInput

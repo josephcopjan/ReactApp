@@ -11,6 +11,7 @@ import { Grid } from '@material-ui/core'
 import Paper from '@material-ui/core/Paper';
 import InputLabel from '@material-ui/core/InputLabel';
 import MyTextField from '../elements/MyTextField';
+import MyTextFieldRF from '../elements/MyTextFieldRF';
 import MySelect from '../elements/MySelect';
 import MySelectTest from '../elements/MySelectTest';
 import MySelectTest2 from '../elements/MySelectTest2';
@@ -327,6 +328,7 @@ const classes = makeStyles((theme) => ({
               </MyTabPanel>
               <MyTabPanel value={tabIndex} index={2}>
               <MyAutocomplete/>
+              <MyTextFieldRF test='MyTest' />
               <Grid container spacing={3} item xs={10}>
                   <Grid item xs={4}></Grid>
                   <Grid item xs={8}>
@@ -344,10 +346,21 @@ const classes = makeStyles((theme) => ({
 
                   <Grid item xs={4}></Grid>
                   <Grid item xs={8}>
-                      <Field name="testik" childName={this.state.parentName} changeSubjects={this.changeSubjects} onNameChange={this.changeParentName} myField={myField} subjects={allSubjectsState} mySubjects={mySubjects} options={allCountries} component={MyTransferList} label="Testik"/>
+                      <Field name="testik"
+                        childName={this.state.parentName}
+                        changeSubjects={this.changeSubjects}
+                        onNameChange={this.changeParentName}
+                        myField={myField}
+                        subjects={allSubjectsState}
+                        mySubjects={mySubjects}
+                        options={allCountries}
+                        component={MyTransferList}
+                        label="Testik"
+                      />
 
                       <Field component={MyTextField} name={this.state.parentName} value={this.state.parentName} />
                       <MyTransferList2/>
+
                   </Grid>
 
               </Grid>

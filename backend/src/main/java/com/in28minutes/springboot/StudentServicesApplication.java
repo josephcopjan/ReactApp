@@ -107,7 +107,7 @@ public class StudentServicesApplication {
 
             userRepository.save(new User("mod", "mod@bezkoder.com", "$2a$10$VcdzH8Q.o4KEo6df.XesdOmXdXQwT5ugNQvu1Pl0390rmfOeA1bhS", roles));
             //userRepository.save(new User(false, "Jozef", "Copjan", "jozef.copjan@sk.ibm.com", new Date(), roles));
-
+            // password 12345678
             countryRepository.save(new Country("SK", "Slovakia"));
             countryRepository.save(new Country("CZ", "Czech republic"));
             countryRepository.save(new Country("US", "USA"));

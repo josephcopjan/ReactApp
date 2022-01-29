@@ -69,6 +69,7 @@ class Menu extends React.Component {
                     <li><a href="/admin/student/new">New</a></li>
                     <li><Link to="/admin/student/new">Find Student</Link></li>
                     <li><Link to="/admin/students">List of Students</Link></li>
+                    <li><Link to="/admin/testPage">Test Page</Link></li>
                   </ul>
                 </li>
                 {!showTestik && (<li className="active"><a href="#">Testik</a></li>)}

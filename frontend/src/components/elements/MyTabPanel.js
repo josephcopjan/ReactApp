@@ -1,10 +1,9 @@
-import React, { Component, Fragment } from 'react';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import PropTypes from 'prop-types';
+import React from 'react'
+import Box from '@material-ui/core/Box'
+import PropTypes from 'prop-types'
 
-function MyTabPanel(props) {
-  const { children, value, index, ...other } = props;
+function MyTabPanel (props) {
+  const { children, value, index, ...other } = props
 
   return (
     <div
@@ -20,13 +19,13 @@ function MyTabPanel(props) {
         </Box>
       )}
     </div>
-  );
+  )
 }
 
 MyTabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
-};
+  value: PropTypes.any.isRequired
+}
 
-export default MyTabPanel;
+export default MyTabPanel
